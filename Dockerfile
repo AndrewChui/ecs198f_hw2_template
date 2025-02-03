@@ -1,14 +1,20 @@
 # Use Debian bookworm as the base image
 FROM debian:bookworm
 
-# Update package list and install required tools: curl and git
-RUN apt-get update && apt-get install -y curl git && rm -rf /var/lib/apt/lists/*
+# Update package list and install required tools: curl
+RUN apk add curl
 
-# Download and install Miniconda
-RUN curl -o Miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    chmod +x Miniconda.sh && \
-    ./Miniconda.sh -b -p /opt/miniconda && \
-    rm Miniconda.sh
+WORKDIR C:\Users\andre\OneDrive\Desktop\ECS198F\ecs198f_hw2_template
+
+# download and install Miniconda
+RUN mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+
+RUN source ~/miniconda3/bin/activate
+
+RUN conda init --all
 
 # Add Miniconda to PATH
 ENV PATH="/opt/miniconda/bin:$PATH"
